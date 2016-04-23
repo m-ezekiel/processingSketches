@@ -17,9 +17,9 @@ void mousePressed() {
   float y = mouseY;
   
   if (keyPressed) {
-    fill(y, sqrt(x*y), y, x);
+    fill(y, sqrt(x * y), y, x);
     rect(mouseX, mouseY, x, y);
   } else  
-    fill(x, y, sqrt(x*y), y);
+    fill(x, y, sqrt(x * y), y);
     rect(mouseX, mouseY, x, y);
 }
