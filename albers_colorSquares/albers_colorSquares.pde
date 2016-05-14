@@ -17,7 +17,7 @@ int rBright = floor(random(50, 400));
 void setup() {
 	size(800, 450);	 
 	colorMode(HSB, height, height, height);
-	background(0, 0, 20);			// bgColor 
+	background(0, 0, 20);	// bgColor 
 
 	rectMode(CENTER);
 	textAlign(RIGHT);
@@ -40,10 +40,14 @@ void setup() {
 	rect(width/2 + 200, height/2 - 25, 400, 400);
 }
 
+
+// **********************************************************
+// Draw function takes mouse XY for inner square color input.
+// **********************************************************
+
 void draw() {
 
 	if (rMode == 1) {				// rMode == 1: colorHue
-
 		// Left box
 		fill(mouseX, rSat, rBright);
 		rect(width/2 - 200, height/2 - 25, 100, 100);
@@ -54,7 +58,6 @@ void draw() {
 	}
 
 	if (rMode == 2) {				// rMode == 2: colorSaturation
-
 		// Left box
 		fill(rHue, mouseX, rBright);
 		rect(width/2 - 200, height/2 - 25, 100, 100);
@@ -64,8 +67,7 @@ void draw() {
 		rect(width/2 + 200, height/2 - 25, 100, 100);
 	}
 
-	if (rMode == 3) {				// rMode == 3: colorBrightness
-		
+	if (rMode == 3) {				// rMode == 3: colorBrightness		
 		// Left box
 		fill(rHue, rSat, mouseX);
 		rect(width/2 - 200, height/2 - 25, 100, 100);
@@ -76,17 +78,22 @@ void draw() {
 	}
 
 	println(mouseX, mouseY);		// Console output for debugging
-	println("rMode: "+ rMode);
-	println("rHue: "+ rHue);
-	println("rSat: "+ rSat);
-	println("rBright: "+ rBright);
+	println("rMode: "+ rMode);	
+	println("rHue: "+ rHue);		
+	println("rSat: "+ rSat);		
+	println("rBright: "+ rBright);	
 } 
 
-void mouseClicked() {
-	fill(0, 0, 20);					// col = bgColor
-	rect(width/2, 425, 800, 50);	// Redraw bg to clear old text
 
-	if (rMode == 1) {				// Compare color squares
+// **************************************************
+// mouseClick interactivity draws comparison squares.
+// **************************************************
+
+void mouseClicked() {
+	fill(0, 0, 20);						// Redraw bg to clear old text
+	rect(width/2, 425, 800, 50);	
+
+	if (rMode == 1) {					// Draw tiny squares at bottom
 		fill(mouseX, rSat, rBright);
 		rect(375, 425, 50, 50);
 		fill(mouseY, rSat, rBright);
