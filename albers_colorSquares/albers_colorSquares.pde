@@ -7,7 +7,7 @@
 int rMode = ceil(random(3));
 int rHue = floor(random(400));
 int rSat = floor(random(50, 400));
-int rBright = floor(random(400));
+int rBright = floor(random(50, 400));
 
 
 // ******************************************
