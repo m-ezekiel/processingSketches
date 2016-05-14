@@ -1,7 +1,7 @@
 // Filename: albers_colorSquares.pde
 // Author: m-ezekiel
 // Date: May 12, 2016
-// Interactive relative color demo
+// Interactive color demo based on the artwork of Josef Albers.
 
 
 int rMode = ceil(random(3));
@@ -47,37 +47,34 @@ void setup() {
 
 void draw() {
 
-	if (rMode == 1) {				// rMode == 1: colorHue
-		// Left box
-		fill(mouseX, rSat, rBright);
-		rect(width/2 - 200, height/2 - 25, 100, 100);
-
-		// Right box
-		fill(mouseY, rSat, rBright);
-		rect(width/2 + 200, height/2 - 25, 100, 100);
+	switch (rMode) {
+		case 1:				// rMode == 1: colorHue
+			// Left box
+			fill(mouseX, rSat, rBright);
+			rect(width/2 - 200, height/2 - 25, 100, 100);
+			// Right box
+			fill(mouseY, rSat, rBright);
+			rect(width/2 + 200, height/2 - 25, 100, 100);
+			break;
+		case 2:				// rMode == 2: colorSaturation
+			// Left box
+			fill(rHue, mouseX, rBright);
+			rect(width/2 - 200, height/2 - 25, 100, 100);
+			// Right box
+			fill(rHue, mouseY, rBright);
+			rect(width/2 + 200, height/2 - 25, 100, 100);
+			break;
+		case 3:				// rMode == 3: colorBrightness	
+			// Left box 
+			fill(rHue, rSat, mouseX);
+			rect(width/2 - 200, height/2 - 25, 100, 100);
+			// Right box
+			fill(rHue, rSat, mouseY);
+			rect(width/2 + 200, height/2 - 25, 100, 100);
+			break;
 	}
 
-	if (rMode == 2) {				// rMode == 2: colorSaturation
-		// Left box
-		fill(rHue, mouseX, rBright);
-		rect(width/2 - 200, height/2 - 25, 100, 100);
-
-		// Right box
-		fill(rHue, mouseY, rBright);
-		rect(width/2 + 200, height/2 - 25, 100, 100);
-	}
-
-	if (rMode == 3) {				// rMode == 3: colorBrightness		
-		// Left box
-		fill(rHue, rSat, mouseX);
-		rect(width/2 - 200, height/2 - 25, 100, 100);
-
-		// Right box
-		fill(rHue, rSat, mouseY);
-		rect(width/2 + 200, height/2 - 25, 100, 100);
-	}
-
-	println(mouseX, mouseY);		// Console output for debugging
+	println(mouseX, mouseY);	// Console output statements
 	println("rMode: "+ rMode);	
 	println("rHue: "+ rHue);		
 	println("rSat: "+ rSat);		
@@ -90,24 +87,27 @@ void draw() {
 // **************************************************
 
 void mouseClicked() {
-	fill(0, 0, 20);						// Redraw bg to clear old text
+	fill(0, 0, 20);						// Redraw w/background color
 	rect(width/2, 425, 800, 50);	
 
-	if (rMode == 1) {					// Draw tiny squares at bottom
-		fill(mouseX, rSat, rBright);
-		rect(375, 425, 50, 50);
-		fill(mouseY, rSat, rBright);
-		rect(425, 425, 50, 50);
-	} else if (rMode == 2) {
-		fill(rHue, mouseX, rBright);
-		rect(375, 425, 50, 50);
-		fill(rHue, mouseY, rBright);
-		rect(425, 425, 50, 50);
-	} else if (rMode == 3) {
-		fill(rHue, rSat, mouseX);
-		rect(375, 425, 50, 50);
-		fill(rHue, rSat, mouseY);
-		rect(425, 425, 50, 50);
+	switch (rMode) {
+		case 1:
+			fill(mouseX, rSat, rBright);
+			rect(375, 425, 50, 50);
+			fill(mouseY, rSat, rBright);
+			rect(425, 425, 50, 50);
+			break;
+		case 2:
+			fill(rHue, mouseX, rBright);
+			rect(375, 425, 50, 50);
+			fill(rHue, mouseY, rBright);
+			rect(425, 425, 50, 50);
+			break;
+		case 3:
+			fill(rHue, rSat, mouseX);
+			rect(375, 425, 50, 50);
+			fill(rHue, rSat, mouseY);
+			rect(425, 425, 50, 50);
 	}
 
 }
