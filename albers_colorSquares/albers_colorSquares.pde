@@ -34,8 +34,8 @@ void setup() {
 
 	// Right outer square
 	int rightCol = floor(random(height));
-	int rightSat = floor(random(height));
-	int rightBright = floor(random(height));
+	int rightSat = floor(random(height/8, height));
+	int rightBright = floor(random(height/8, height));
 	fill(rightCol, rightSat, rightBright);
 	rect(width/2 + 200, height/2 - 25, 400, 400);
 }
