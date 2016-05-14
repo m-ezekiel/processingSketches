@@ -27,8 +27,8 @@ void setup() {
 
 	// Left outer square
 	int leftCol = floor(random(height));
-	int leftSat = floor(random(height));
-	int leftBright = floor(random(height));
+	int leftSat = floor(random(height/8, height));
+	int leftBright = floor(random(height/8, height));
 	fill(leftCol, leftSat, leftBright);
 	rect(width/2 - 200, height/2 - 25, 400, 400);
 
