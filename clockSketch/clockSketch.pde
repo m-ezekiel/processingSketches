@@ -3,23 +3,44 @@
 // Date: 
 //
 
+
+
 void setup () {
-	size(400, 400);
+	size(800, 800);
 	smooth();
+  noStroke();
+
+  // Draw the clock face 
+  int radius = int(width/1.5);
+  int [] centerPoint = {width/2, height/2};
+  fill(0);
+  ellipse(centerPoint[0], centerPoint[1], radius, radius);
 }
 
 void draw() {
-  int sec = second();  // Values from 0 - 59
-  int min = minute();  // Values from 0 - 59
-  int hour = hour();    // Values from 0 - 23
 
-  fill(255, 40);
-  rect(100, 100, 200, hour * 10); // Hours
- 
-  fill(40, 40);
-  rect(100, 100, 200, min);	// Minutes
- 
-  fill(100, 40);
-  rect(100, 100, 200, sec);	// Seconds
+  int radius = int(width/1.5);
+  int [] centerPoint = {width/2, height/2};
+
+  int sec = second();
+  int min = minute();
+  int hour = hour();
+  int day = day();
+
+  // days
+  fill(120);
+  arc(centerPoint[0], centerPoint[1], radius, radius, 0, PI/15 * day);
+
+  // secs
+  fill(90);
+  arc(centerPoint[0], centerPoint[1], radius/1.3, radius/1.3, 0, PI/30 * sec);
+
+  // mins
+  fill(40);
+  arc(centerPoint[0], centerPoint[1], radius/2, radius/2, 0, PI/30 * min);
+
+  // hour
+  fill(0);
+  arc(centerPoint[0], centerPoint[1], radius/4, radius/4, 0, PI/12 * hour);
 
 }

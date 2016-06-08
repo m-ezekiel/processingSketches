@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class albers_colorSquares extends PApplet {
+
 // Filename: albers_colorSquares.pde
 // Author: m-ezekiel
 // Date: May 12, 2016
@@ -14,8 +30,8 @@ int rBright = floor(random(50, 400));
 // Setup background, and primary color boxes.
 // ******************************************
 
-void setup() {
-	size(800, 450);	 
+public void setup() {
+		 
 	colorMode(HSB, height, height, height);
 	background(0, 0, 20);	// bgColor 
 
@@ -23,7 +39,7 @@ void setup() {
 	textAlign(RIGHT);
 
 	noStroke();
-	smooth();
+	
 
 	// Left outer square
 	int leftCol = floor(random(height));
@@ -45,7 +61,7 @@ void setup() {
 // Draw function takes mouse XY for inner square color input.
 // **********************************************************
 
-void draw() {
+public void draw() {
 
 	switch (rMode) {
 		case 1:				// rMode == 1: colorHue
@@ -86,7 +102,7 @@ void draw() {
 // mouseClick interactivity draws comparison squares.
 // **************************************************
 
-void mouseClicked() {
+public void mouseClicked() {
 	fill(0, 0, 20);						// Redraw w/background color
 	rect(width/2, 425, 800, 50);	
 
@@ -109,4 +125,14 @@ void mouseClicked() {
 			rect(425, 425, 50, 50);
 	}
 
+}
+  public void settings() { 	size(800, 450); 	smooth(); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "albers_colorSquares" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
 }
