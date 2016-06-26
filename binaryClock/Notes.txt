@@ -1,0 +1,4 @@
+NEXT;
+- Separate the columns from the canvas
+- Soften the transitions
+- 

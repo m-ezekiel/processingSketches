@@ -3,7 +3,7 @@
 //
 //
 
-String sec, min, hr;        // Define so they don't break the TC defs below.
+String sec, min, hr;
 TimeColumn hours, minutes, seconds;
 
 void setup() {
