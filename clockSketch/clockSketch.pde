@@ -28,19 +28,19 @@ void draw() {
   int day = day();
 
   // days
-  fill(120);
+  fill(160);
   arc(centerPoint[0], centerPoint[1], radius, radius, 0, PI/15 * day);
 
   // secs
-  fill(90);
+  fill(120);
   arc(centerPoint[0], centerPoint[1], radius/1.3, radius/1.3, 0, PI/30 * sec);
 
   // mins
-  fill(40);
+  fill(70);
   arc(centerPoint[0], centerPoint[1], radius/2, radius/2, 0, PI/30 * min);
 
   // hour
   fill(0);
-  arc(centerPoint[0], centerPoint[1], radius/4, radius/4, 0, PI/12 * hour);
+  arc(centerPoint[0], centerPoint[1], radius/4, radius/4, 0, PI/12 * hour+1);
 
 }
