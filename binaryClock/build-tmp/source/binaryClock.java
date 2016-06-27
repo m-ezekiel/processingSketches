@@ -19,7 +19,7 @@ public class binaryClock extends PApplet {
 //
 //
 
-String sec, min, hr;        // Define so they don't break the TC defs below.
+String sec, min, hr;
 TimeColumn hours, minutes, seconds;
 
 public void setup() {
@@ -33,9 +33,9 @@ public void setup() {
     
 
     int partitions = 6;
-    hours = new TimeColumn(0, 0, 200, 600, partitions, hr);
-    minutes = new TimeColumn(200, 0, 200, 600, partitions, min);
-    seconds = new TimeColumn(400, 0, 200, 600, partitions, sec);
+    hours = new TimeColumn(100, 0, 200, 600, partitions, hr);
+    minutes = new TimeColumn(300, 0, 200, 600, partitions, min);
+    seconds = new TimeColumn(500, 0, 200, 600, partitions, sec);
 
 }
 
@@ -51,37 +51,43 @@ public void draw() {
     // Control loop for hours
     for (int i = 0; i < hours.p; i++) {
         if (hr.charAt(i) == '1') {
-            fill(255);
+            fill(220);
             rect(hours.x, 
-                hours.y + (i * (height/hours.p)), 
-                width, 
+                hours.y + (i * (hours.height/hours.p)), 
+                hours.width, 
                 height/hours.p);
         }
     }
 
-    fill(75);
+    fill(0);
     minutes.display_col();
     // Control loop for minutes
     for (int i = 0; i < minutes.p; i++) {
         if (min.charAt(i) == '1') {
-            fill(255);
+            fill(110);
             rect(minutes.x, 
-                minutes.y + (i * (height/minutes.p)), 
-                width, 
-                height/minutes.p);
+                minutes.y + (i * (minutes.height/minutes.p)), 
+                minutes.width, 
+                minutes.height/minutes.p);
         }
     }
 
-    fill(150);
+    fill(0);
     seconds.display_col();
     // Control loop for seconds
     for (int i = 0; i < seconds.p; i++) {
         if (sec.charAt(i) == '1') {
-            fill(255);
+            fill(50);
             rect(seconds.x, 
-                seconds.y + (i * (height/seconds.p)), 
-                width, 
-                height/seconds.p);
+                seconds.y + (i * (seconds.height/seconds.p)), 
+                seconds.width, 
+                seconds.height/seconds.p);
+        } else {
+            fill(255, 0);   // Fill transparent
+            rect(seconds.x, 
+                seconds.y + (i * (seconds.height/seconds.p)), 
+                seconds.width, 
+                seconds.height/seconds.p);
         }
     }
 
@@ -107,7 +113,7 @@ class TimeColumn {
     }
 
 }
-  public void settings() {  size(600, 600);  smooth(); }
+  public void settings() {  size(800, 600);  smooth(); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "binaryClock" };
     if (passedArgs != null) {
