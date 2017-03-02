@@ -1,0 +1,111 @@
+// File: 
+// Author: m-ezekiel
+// Template for using MIDI input devices
+
+import org.gamecontrolplus.gui.*;
+import org.gamecontrolplus.*;
+import net.java.games.input.*;
+
+ControlIO control;
+Configuration config;
+ControlDevice gpad;
+
+
+// FUNCTION PROTOTYPES
+void saveImage();
+void getUserInput();
+void drawParameters();
+void drawShapes();
+void reset(...);
+int analogToInteger(float, float, int);
+int randomInt(int, int);
+int gaussianInt(int, int);
+int limitScale();
+
+
+// VARIABLE DEFINITIONS
+float analogX, analogY, analogU, analogV;
+boolean A1, A2, A3, A4, M1, M2, L1, L2, R1, R2;
+boolean left, right, up, down, select1, select2;
+
+
+// INITIALIZE PARAMETERS
+int xpos, ypos = 0;
+int increment = 2;
+int dpX, dpY = 100;
+int scalar = 50;
+int mScalar = scalar / 2;
+int size = 300;
+int fps = 24;
+int red, blue, green = 0;
+int alpha = 100;
+
+
+
+
+public void setup() {
+  size(1280, 750);
+  background(red, blue, green);
+  noStroke();
+  frameRate(fps);
+
+  // Initialise the ControlIO
+  control = ControlIO.getInstance(this);
+  
+  // Find a device that matches the configuration file
+  gpad = control.getMatchedDevice("full_gamePad");
+  if (gpad == null) {
+    println("No suitable device configured");
+    System.exit(-1); // End the program NOW!
+  }
+}
+
+
+// -------------
+// Draw function
+// -------------
+
+public void draw() {
+  getUserInput();
+  drawParameters();
+
+  // ANALOG TO INTEGER
+  int joystick1 = analogToInteger(analogX, analogY, scalar);
+  int joystick2 = analogToInteger(analogU, analogV, scalar);
+
+  // GET COORDINATES
+  xpos = gaussianInt(dpX, width);
+  ypos = gaussianInt(dpY, height);
+
+  // RANDOM BEHAVIORS
+  if (L2 & variable) {variable = randomInt(min, max);}
+
+  // D-PAD BEHAVIORS
+  if (up & variable) {variable = max;}
+  if (down & variable) {variable = min;}
+  if (left & variable) {variable += increment;}
+  if (right & variable) {variable -= increment;}
+
+  // ANALOG MODIFIERS
+  if ((R1 | L1) & variable) {variable += increment * joystick1 / mScalar;}
+
+  // LIMIT SCALE
+  variable = limitScale(variable, min, max);
+
+  // DRAW SHAPES
+  drawShapes();
+
+  // DIAGNOSTICS
+}
+
+
+colors = {A1, A2, A3, A4}
+dispersion = {R1, R2}
+size = {L1}
+framerate = {select2}
+Random = {L2 + variable}
+
+
+
+
+

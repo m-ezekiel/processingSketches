@@ -16,8 +16,10 @@ public class binaryClock extends PApplet {
 
 // Filename: binaryClock.pde
 // Author: m-ezekiel
-//
-//
+// Features I'd like to add to binaryClock:
+//     - Fading blocks
+//     - Colors
+
 
 String sec, min, hr;
 TimeColumn hours, minutes, seconds;
@@ -33,9 +35,9 @@ public void setup() {
     
 
     int partitions = 6;
-    hours = new TimeColumn(100, 0, 200, 600, partitions, hr);
-    minutes = new TimeColumn(300, 0, 200, 600, partitions, min);
-    seconds = new TimeColumn(500, 0, 200, 600, partitions, sec);
+    hours = new TimeColumn(85, 20, 200, 600, partitions, hr);
+    minutes = new TimeColumn(300, 20, 200, 600, partitions, min);
+    seconds = new TimeColumn(515, 20, 200, 600, partitions, sec);
 
 }
 
@@ -55,7 +57,7 @@ public void draw() {
             rect(hours.x, 
                 hours.y + (i * (hours.height/hours.p)), 
                 hours.width, 
-                height/hours.p);
+                hours.height/hours.p);
         }
     }
 
@@ -113,9 +115,9 @@ class TimeColumn {
     }
 
 }
-  public void settings() {  size(800, 600);  smooth(); }
+  public void settings() {  size(800, 640);  smooth(); }
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "binaryClock" };
+    String[] appletArgs = new String[] { "--present", "--window-color=#666666", "--hide-stop", "binaryClock" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {

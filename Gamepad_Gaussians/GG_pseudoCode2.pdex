@@ -1,0 +1,147 @@
+// File: 
+// Author: m-ezekiel
+// Template for using MIDI input devices
+
+import org.gamecontrolplus.gui.*;
+import org.gamecontrolplus.*;
+import net.java.games.input.*;
+
+ControlIO control;
+Configuration config;
+ControlDevice gpad;
+
+
+// FUNCTION PROTOTYPES
+void saveImage();
+void getUserInput();
+void drawParameters();
+void drawShapes();
+void reset(...);
+int analogToInteger(float, float, int);
+int randomInt(int, int);
+int gaussianInt(int, int);
+int limitScale();
+
+
+// VARIABLE DEFINITIONS
+float analogX, analogY, analogU, analogV;
+boolean A1, A2, A3, A4, M1, M2, L1, L2, R1, R2;
+boolean left, right, up, down, select1, select2;
+
+
+// INITIALIZE PARAMETERS
+int xpos = 0; int ypos = 0;
+int dpX = 0; int dpY = 0;
+int increment = 2;
+int scalar = 50;
+int mScalar = scalar / 1;
+int size = 300;
+int fps = 24;
+int red, blue, green = 0;
+int alpha = 0;
+
+// ASSIGN CONTROL MAPPINGS (variable)
+int A1_ctrl = red;
+int A2_ctrl = green;
+int A3_ctrl = blue;
+int A4_ctrl = alpha;
+int up_ctrl = dpY;
+int down_ctrl = scalar;
+int right_ctrl = size;
+int left_ctrl = dpX;
+// REFRESH CONTROL VALUES (must match assignments)
+// public void refreshValues() {
+//   red = A1_ctrl;
+//   green = A2_ctrl;
+//   blue = A3_ctrl;
+//   alpha = A4_ctrl;
+//   dpY = up_ctrl;
+//   scalar = down_ctrl ;
+//   size = right_ctrl;
+//   dpX = left_ctrl ;
+// }
+
+
+// public void refreshValues(int a1, int a2, int a3, int a4, int d1, int d2, int d3, int d4) {
+//   a1 = A1_ctrl;
+//   a2 = A2_ctrl;
+//   a3 = A3_ctrl;
+//   a4 = A4_ctrl;
+//   d1 = up_ctrl;
+//   d2 = down_ctrl ;
+//   d3 = left_ctrl ;
+//   d4 = right_ctrl;
+// }
+
+
+public void setup() {
+  size(1280, 750);
+  background(red, blue, green);
+  noStroke();
+  frameRate(fps);
+
+  // Initialise the ControlIO
+  control = ControlIO.getInstance(this);
+  
+  // Find a device that matches the configuration file
+  gpad = control.getMatchedDevice("full_gamePad");
+  if (gpad == null) {
+    println("No suitable device configured");
+    System.exit(-1); // End the program NOW!
+  }
+}
+
+
+// -------------
+// Draw function
+// -------------
+
+public void draw() {
+  getUserInput();
+  refreshValues(red, green, blue, alpha, dpY, scalar, dpX, size);
+  drawParameters();
+
+  // ANALOG TO INTEGER
+  int joystick1 = analogToInteger(analogX, analogY, scalar);
+  int joystick2 = analogToInteger(analogU, analogV, scalar);
+
+  // GET COORDINATES
+  xpos = gaussianInt(dpX, width);
+  ypos = gaussianInt(dpY, height);
+
+  // RANDOM BEHAVIORS
+  if ((L2|R2) & variable) {variable = randomInt(min, max);}
+
+  // INCREMENTAL BEHAVIORS
+  if (L1 & A1) {A1_ctrl -= increment;}
+  if (L1 & A2) {A2_ctrl -= increment;}
+  if (L1 & A3) {A3_ctrl -= increment;}
+  if (L1 & A4) {A4_ctrl -= increment;}
+  if (L1 & up) {up_ctrl -= increment;}
+  if (L1 & left) {left_ctrl -= increment;}
+  if (L1 & down) {down_ctrl -= increment;}
+  if (L1 & right) {right_ctrl -= increment;}
+
+  if (R1 & A1) {A1_ctrl += increment;}
+  if (R1 & A2) {A2_ctrl += increment;}
+  if (R1 & A3) {A3_ctrl += increment;}
+  if (R1 & A4) {A4_ctrl += increment;}
+  if (R1 & up) {up_ctrl += increment;}
+  if (R1 & left) {left_ctrl += increment;}
+  if (R1 & down) {down_ctrl += increment;}
+  if (R1 & right) {right_ctrl += increment;}
+
+
+  // ANALOG MODIFIERS
+  if (variable) {variable += increment * joystick1 / mScalar;}
+
+  // LIMIT SCALE
+  variable = limitScale(variable, min, max);
+
+  // DRAW SHAPES
+  drawShapes();
+
+  // DIAGNOSTICS
+}
+
+

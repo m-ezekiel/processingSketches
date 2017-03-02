@@ -103,7 +103,7 @@ public void draw() {
 // **************************************************
 
 public void mouseClicked() {
-	fill(0, 0, 20);						// Redraw w/background color
+	fill(0, 0, 20);				// Redraw w/background color
 	rect(width/2, 425, 800, 50);	
 
 	switch (rMode) {		case 1:

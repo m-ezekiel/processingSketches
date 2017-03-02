@@ -1,0 +1,138 @@
+// File: 
+// Author: m-ezekiel
+// Template for using MIDI input devices
+
+import org.gamecontrolplus.gui.*;
+import org.gamecontrolplus.*;
+import net.java.games.input.*;
+
+ControlIO control;
+Configuration config;
+ControlDevice gpad;
+
+
+// VARIABLE DEFINITIONS
+float analogX, analogY, analogU, analogV;
+boolean A1, A2, A3, A4, M1, M2, L1, L2, R1, R2;
+boolean left, right, up, down, select1, select2;
+
+
+// INITIALIZE PARAMETERS
+int xpos = 0; int ypos = 0;
+int dpX = 0; int dpY = 0;
+int increment = 2;
+int scalar = 50;
+int mScalar = scalar / 1;
+int size = 300;
+int fps = 24;
+int red, blue, green = 0;
+int alpha = 0;
+
+
+
+public void setup() {
+  size(1280, 750);
+  background(alpha);
+  noStroke();
+
+  // Initialise the ControlIO
+  control = ControlIO.getInstance(this);
+  
+  // Find a device that matches the configuration file
+  gpad = control.getMatchedDevice("full_gamePad");
+  if (gpad == null) {
+    println("No suitable device configured");
+    System.exit(-1); // End the program NOW!
+  }
+}
+
+
+public void draw() {
+  getUserInput();
+
+  // ANALOG TO INTEGER
+  int joystick1 = analogToInteger(analogX, analogY, scalar);
+  int joystick2 = analogToInteger(analogU, analogV, scalar);
+
+
+  // GET COORDINATES
+  xpos = gaussianInt(dpX, width);
+  ypos = gaussianInt(dpY, height);
+
+
+  // RANDOM BEHAVIORS: if (L2 & button) {variable = randomInt(min, max);}
+
+  if (L2 & A1) {red = randomInt(0, 255);}
+  if (L2 & A2) {blue = randomInt(0, 255);}
+  if (L2 & A3) {green = randomInt(0, 255);}
+  if (L2 & A4) {alpha = randomInt(0, 255);}
+  if (L2 & R1) {dpX = randomInt(0, 999);}
+  if (L2 & L1) {dpY = randomInt(0, 999);}
+
+  if (R2 & A1) {red = randomInt(0, 255);}
+  if (R2 & A2) {blue = randomInt(0, 255);}
+  if (R2 & A3) {green = randomInt(0, 255);}
+  if (R2 & A4) {alpha = randomInt(0, 255);}
+  if (R2 & R1) {dpX = randomInt(0, 999);}
+  if (R2 & L1) {dpY = randomInt(0, 999);}
+
+  // D-PAD BEHAVIORS: if (d-pad & button) {variable += increment;}
+
+  // Colors
+  if ((up|right) & A1) {red += increment;}
+  if ((down|left) & A1) {red -= increment;}
+  if ((up|right) & A2) {green += increment;}
+  if ((down|left) & A2) {green -= increment;}
+  if ((up|right) & A3) {blue += increment;}
+  if ((down|left) & A3) {blue -= increment;}
+  if ((up|right) & A4) {alpha += increment;}
+  if ((down|left) & A4) {alpha -= increment;}
+
+  // Toggle min/max
+  if ((right) & A1) {red = 255;}
+  if ((left) & A1) {red = 0;}
+  if ((right) & A2) {green = 255;}
+  if ((left) & A2) {green = 0;}
+  if ((right) & A3) {blue = 255;}
+  if ((left) & A3) {blue = 0;}
+  if ((right) & A4) {alpha = 255;}
+  if ((left) & A4) {alpha = 0;}
+
+
+  // Dispersion
+  if ((up|right) & R1) {dpX += increment * 10;}
+  if ((down|left) & R1) {dpX -= increment * 10;}
+  if ((up|right) & L1) {dpY += increment * 10;}
+  if ((down|left) & L1) {dpY -= increment * 10;}
+
+  // Brush size
+  if (select1 & (A4|A3)) {size += increment * 10;}
+  if (select1 & (A1|A2)) {size -= increment * 10;}
+
+  // ANALOG MODIFIERS: if ((R1 | L1) & button) {variable += increment * joystick1 / mScalar;}
+
+  if ((R1 | L1) & A1) {red += increment * joystick1 / mScalar;}
+  if ((R1 | L1) & A2) {green += increment * joystick1 / mScalar;}
+  if ((R1 | L1) & A3) {blue += increment * joystick1 / mScalar;}
+  if ((R1 | L1) & A4) {alpha += increment * joystick1 / mScalar;}
+
+
+  // GAMEPLAY FUNCTIONS
+
+  if (select2) {muteColors();}
+  if (M1 & M2) {saveImage();}
+  if (L2 & R2) {resetBlack();}
+  if (L2 & R2 & select1) {resetWhite();}
+
+  red = limitScale(red, 0, 255);
+  green = limitScale(green, 0, 255);
+  blue = limitScale(blue, 0, 255);
+  alpha = limitScale(alpha, 0, 255);
+
+
+  drawShapes();
+  drawParameters();
+
+
+  // DIAGNOSTICS
+}

@@ -1,0 +1,27 @@
+int state = 0; // The current state
+
+final int MAIN_MENU = 0;
+final int RECALL_MENU = 1;
+final int RECORD_SCREEN = 2;
+
+//Stuff
+
+void setup() {
+  size(600, 500);
+  
+  //Stuff
+}
+
+void draw() {
+  switch(state) {
+  case MAIN_MENU:
+    //Main Menu Stuff
+    break;
+  case RECALL_MENU:
+    //Menu Stuff
+    break;
+  case GAME:
+    //Game Stuff
+    break;
+  }
+}

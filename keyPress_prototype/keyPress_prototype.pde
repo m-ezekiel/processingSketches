@@ -2,8 +2,11 @@
 // Author: m-ezekiel
 // Based on 'Text Box Writer' by Inarts and GoToLoop
 // Keylogging prototype using text processing tools.
+// The latest version of this is in my research folder
 
-static final int NUM = 2;						// Define the number of text boxes.
+PrintWriter output;
+
+static final int NUM = 1;						// Define the number of text boxes.
 final TextBox[] tboxes = new TextBox[NUM];		// Call the constructors for TextBox class. 
 int idx;
  
@@ -13,15 +16,28 @@ int idx;
 
 void setup() {
   size(640, 480);
-  frameRate(20);
+  frameRate(60);
   smooth(4);
+
+  // Get datetime information
+  int [] datetime = new int[6];
+  datetime[0] = year();
+  datetime[1] = month();
+  datetime[2] = day();
+  datetime[3] = hour();
+  datetime[4] = minute();
+  datetime[5] = second();
+
+  // Create new datestamped file in the sketch directory
+  println("date: "+ join(nf(datetime, 0), "-"));
+  output = createWriter("keypresses_" + join(nf(datetime, 0), "-") + ".txt");
  
   rectMode(CORNER);
   textAlign(LEFT);
   strokeWeight(1.5);
  
   instantiateBoxes();
-  tboxes[idx = 1].isFocused = true;
+  tboxes[idx = 0].isFocused = true;
 }
 
 
@@ -51,9 +67,26 @@ void mouseClicked() {
 // ************************************************
  
 void keyTyped() {
-  final char k = key;
-  if (k == CODED | idx < 0)  return;
- 
+  char k = key;
+
+  println("key: "+ k);
+  println("millis: " + millis());
+
+  // Substitute _ and ^ for special characters [space] and [apostrophe] in the output file
+  if (k == ' ') k = '_';
+  if (k == '\'' | k == '\"') k = '`';
+  if (k == BACKSPACE) k = '^';
+  if (k == TAB) k = '~';
+  if (k == ENTER | k == RETURN) k = '|';
+
+  // Write the coordinate to a file with a "\t" (TAB character) between each entry
+  output.println(k + "\t" + millis());
+
+  // Reassign the key value so the special chars appear in the interactive text window
+  k = key;
+
+  if (k == CODED | idx < 0) return;
+
   final TextBox tbox = tboxes[idx];
   final int len = tbox.txt.length();
  
@@ -82,24 +115,37 @@ void keyPressed() {
 }
 
 
+// ***********************************************************
+// Click the mouse to save keypress data and exit the program.
+// ***********************************************************
+
+void mousePressed() { 
+  output.flush(); // Write the remaining data
+  output.close(); // Finish the file
+
+  // Instead of exit, mousepress should signal a visualization subroutine
+  exit(); 
+}
+
+
 // ********************************************************
 // Define dimension and color parameters of the Text Boxes.
 // ********************************************************
 
 void instantiateBoxes() {
-  tboxes[0] = new TextBox(
-  width>>2, height/4 + height/16, // x, y
-  width - width/2, height/2 - height/4 - height/8, // w, h
-  215, // lim
-  0300 << 030, color(-1, 040), // textC, baseC
-  color(-1, 0100), color(#FF00FF, 0200)); // bordC, slctC
+  // tboxes[1] = new TextBox(
+  // width>>2, height/4 + height/16, // x, y
+  // width - width/2, height/2 - height/4 - height/8, // w, h
+  // 215, // lim
+  // 0300 << 030, color(-1, 040), // textC, baseC
+  // color(-1, 0100), color(#FF00FF, 0200)); // bordC, slctC
  
-  tboxes[1] = new TextBox(
-  width>>3, height/2 + height/8, // x, y
-  width - width/4, height - height/2 - height/4, // w, h
-  640, // lim
+  tboxes[0] = new TextBox(
+  width>>3, height/4, // x, y
+  width - width/4, height - height/2, // w, h
+  10000, // character limit (for textbox display)
   0300 << 030, color(-1, 040), // textC, baseC
-  color(-1, 0100), color(#FFFF00, 0200)); // bordC, slctC
+  color(-1, 0100), color(#272700, 0200)); // bordC, slctC
 }
 
 
@@ -142,7 +188,7 @@ class TextBox {  // demands rectMode(CORNER)
   }
  
   String blinkChar() {
-    return isFocused && (frameCount>>2 & 1) == 0 ? "_" : "";
+    return isFocused && (frameCount>>4 & 1) == 0 ? "_" : "";
   }
  
   boolean checkFocus() {
