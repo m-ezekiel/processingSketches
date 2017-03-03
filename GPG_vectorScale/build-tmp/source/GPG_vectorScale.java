@@ -29,13 +29,12 @@ boolean left, right, up, down, select1, select2;
 // INITIALIZE PARAMETERS
 int xpos = 0; int ypos = 0;
 int dpX = 300; int dpY = 300;
-int increment = 2;
-int scalar = 50;
-int mScalar = scalar / 1;
 int brushSize_X = 350;
 int brushSize_Y = 350;
 int red, blue, green = 0;
 int alpha = 60;
+
+int scaleFactor = 8;
 
 
 public void setup() {
@@ -43,7 +42,7 @@ public void setup() {
   background(0);
   noStroke();
   frameRate(60);
-  table = loadTable("2017-3-2-19-28-45_gamepadKeys.txt", "header, tsv");
+  table = loadTable("2017-3-2-19-58-11_gamepadKeys.txt", "header, tsv");
   println(table.getRowCount() + " total rows in table");
   println(table.getColumnCount() + " total columns in table");
 }
@@ -51,13 +50,17 @@ public void setup() {
 
 public void draw() {
 
+  // Use cases to determine the value of a scalar
+  if (width == 1280)
+    println("yes! 1280 ");
+
   // GET DATA
-  xpos = table.getInt(index, "xpos");
-  ypos = table.getInt(index, "ypos");
-  brushSize_X = table.getInt(index, "sX");
-  brushSize_Y = table.getInt(index, "sY");
-  dpX = table.getInt(index, "dpX");
-  dpY = table.getInt(index, "dpY");
+  xpos = table.getInt(index, "xpos") * scaleFactor;
+  ypos = table.getInt(index, "ypos") * scaleFactor;
+  brushSize_X = table.getInt(index, "sX") * scaleFactor;
+  brushSize_Y = table.getInt(index, "sY") * scaleFactor;
+  dpX = table.getInt(index, "dpX") * scaleFactor;
+  dpY = table.getInt(index, "dpY") * scaleFactor;
   red = table.getInt(index, "red");
   green = table.getInt(index, "green");
   blue = table.getInt(index, "blue");
@@ -67,16 +70,18 @@ public void draw() {
   analogU = table.getFloat(index, "anlgU");
   analogV = table.getFloat(index, "anlgV");
 
-  // Add save frame and exit.
-  // if (index == lines.length) { exit(); }
-
   if (index < table.getRowCount() - 1) {
-    // assign variable values with appropriate indexes
-
     drawShapes();
-
     index = index + 1; 
-  } 
+  }
+
+  println("index: "+index);
+
+  // Add save frame and exit.
+  if (index == table.getRowCount() - 1) {
+    saveFrame("hd_image.png");
+    exit();
+  }
 }
 
 
@@ -85,7 +90,7 @@ public void drawShapes() {
   ellipse(xpos, ypos, analogX * brushSize_X, analogY * brushSize_Y);
   ellipse(xpos, ypos, analogU * brushSize_X, analogV * brushSize_Y);
 }
-  public void settings() {  size(1280, 800); }
+  public void settings() {  size(10240, 6400); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "GPG_vectorScale" };
     if (passedArgs != null) {
