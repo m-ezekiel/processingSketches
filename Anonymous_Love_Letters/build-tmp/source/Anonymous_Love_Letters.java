@@ -32,7 +32,7 @@ public void setup() {
   background(0);
   stroke(255);
   // frameRate(24);
-  lines = loadStrings("anonLetter.txt");
+  lines = loadStrings("words_IKI.txt");
 
   // Create the font
   printArray(PFont.list());
@@ -99,7 +99,7 @@ class Record {
 }
   public void settings() {  size(800, 800); }
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "--present", "--window-color=#666666", "--hide-stop", "Anonymous_Love_Letters" };
+    String[] appletArgs = new String[] { "Anonymous_Love_Letters" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {
